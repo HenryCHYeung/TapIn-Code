@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Sign in</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        <div id="loginPage">
+            <form class="form" id="login">
+                <h1 class="form__title">Login</h1>
+                <div class="form__message form__message--error"></div>
+                <div class="form__input-group">
+                    <input type="text" id="signupID" class="form__input" autofocus placeholder="Student/Professor ID">
+                    <div class="form__input-error-message"></div>
+                </div>
+                <div class="form__input-group">
+                    <input type="password" class="form__input" placeholder="Password">
+                    <div class="form__input-error-message"></div>
+                </div>
+                <button class="form__button" type="submit">Login</button>
+                <p class="form__text">
+                    <a href="#" class="form__link" id="linkForgotPassword" onclick="swapBody('loginPage', 'forgotPage');">Forgot your password?</a>
+                </p>
+                <p class="form__text">
+                    <a href="#" class="form__link" id="linkCreateAccount" onclick="swapBody('loginPage', 'createPage');">Don't have an account? Create account</a>
+                </p>
+            </form>
+        </div>
+        
+
+
+        <div id="createPage" style="display:none">
+            <form class="form" id="createAccount" name="createName">
+                <h1 class="form__title">Create Account</h1>
+                <div class="form__message form__message--error"></div>
+                <div class="radio__input-group">
+                    <div>Are you a:</div>
+                    <input type="radio" class="radio__input" id="student" name="identity" value="student">
+                    <label for="student">Student</label><br>
+                    <input type="radio" class="radio__input" id="prof" name="identity" value="prof">
+                    <label for="prof">Professor</label>
+                </div>
+                <div class="form__input-group">
+                    <input type="text" class="form__input" autofocus placeholder="Student/Professor ID">
+                    <div class="form__input-error-message"></div>
+                </div>
+                <div class="form__input-group">
+                    <input type="text" class="form__input" placeholder="Email Address">
+                    <div class="form__input-error-message"></div>
+                </div>
+                <div class="form__input-group">
+                    <input type="password" id="setPassword" class="form__input" name="psd1" placeholder="Password">
+                    <div class="form__input-error-message"></div>
+                </div>
+                <div class="form__input-group">
+                    <input type="password" id="confirmPassword" class="form__input" name="psd2" placeholder="Confirm Password">
+                    <div class="form__input-error-message"></div>
+                </div>
+                <button class="form__button" type="submit">Continue</button>
+                <p class="form__text">
+                    <a href="#" class="form__link" id="linkLogin" onclick="swapBody('createPage', 'loginPage');">Already have an account? Sign in</a>
+                </p>
+            </form>
+        </div>
+
+
+
+        <div id="forgotPage" style="display:none">
+            <form class="form" id="forgotPassword">
+                <h1 class="form__title">Forgot your password?</h1>
+                <div class="form__message form__message--error"></div>
+                <div class="form__input-group">
+                    <input type="text" class="form__input" autofocus placeholder="Student/Professor ID">
+                </div>
+                <div class="form__input-group">
+                    <input type="text" class="form__input" placeholder="Email Address">
+                </div>
+                <button class="form__button" type="submit">Send me an email</button>
+                <p class="form__text">
+                    <a href="#" class="form__link" id="linkLogin" onclick="swapBody('forgotPage', 'loginPage');">Back</a>
+                </p>
+                <p class="form__text">
+                    <a href="#" class="form__link" id="linkCreateAccount" onclick="swapBody('forgotPage', 'createPage');">Don't have an account? Create account</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script src= "script.js"></script>
+</body>
