@@ -39,5 +39,5 @@ INSERT INTO students VALUES
 (1293960,'Henry','Yeung','cyeung03@nyit.edu','passwordHenry');
 
 INSERT INTO professors VALUES
-(1,'Wenja','Li','wli20@nyit.edu');
+(1,'Wenja','Li','wli20@nyit.edu','passwordWenjaLi');
 
