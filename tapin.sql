@@ -1,4 +1,4 @@
-CREATE TABLE students
+CREATE TABLE IF NOT EXISTS students
 (
 	studentID		INT			PRIMARY KEY, 
 	stuFirstName		VARCHAR(50)		NOT NULL, 
@@ -7,7 +7,7 @@ CREATE TABLE students
 	studentPassword		varchar(50)		NOT NULL
 );
 
-CREATE TABLE professors
+CREATE TABLE IF NOT EXISTS professors
 (
 	profID			INT			PRIMARY KEY, 
 	profFirstName		VARCHAR(50)		NOT NULL, 
@@ -16,9 +16,9 @@ CREATE TABLE professors
 	profPassword		varchar(50)		NOT NULL
 );
 
-CREATE TABLE attendance
+CREATE TABLE IF NOT EXISTS attendance
 (
-	attendID		INT			PRIMARY KEY		AUTO_INCREMENT, 
+	attendID		INT			IDENTITY(1,1)   PRIMARY KEY, 
 	attendClass		VARCHAR(50)		NOT NULL, 
 	attendDate		VARCHAR(50)		NOT NULL,
  	attendTime		VARCHAR(50)		NOT NULL,
@@ -32,12 +32,11 @@ CREATE TABLE attendance
 );
 
 
-INSERT INTO students VALUES
+INSERT OR REPLACE INTO students VALUES
 (1281205,'Isaac','Ortega','ortega@nyit.edu','passwordIsaac'),
 (1277182,'Christian','Pascal','csinoagp@nyit.edu','passwordChris'),
 (1187413,"O'Sean",'Blagrove','oblagrov@nyit.edu','passwordOSean'),
 (1293960,'Henry','Yeung','cyeung03@nyit.edu','passwordHenry');
 
-INSERT INTO professors VALUES
+INSERT OR REPLACE INTO professors VALUES
 (1,'Wenja','Li','wli20@nyit.edu','passwordWenjaLi');
-
