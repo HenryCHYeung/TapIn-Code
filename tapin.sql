@@ -9,7 +9,7 @@ CREATE TABLE students
 
 CREATE TABLE professors
 (
-	professorID		INT			PRIMARY KEY, 
+	profID			INT			PRIMARY KEY, 
 	profFirstName		VARCHAR(50)		NOT NULL, 
 	profLastName		VARCHAR(50)		NOT NULL,
 	profEmail		varchar(50) 		NOT NUll,
