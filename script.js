@@ -1,3 +1,5 @@
+const sqlite3 = require('sqlite3').verbose();
+
 function swapBody(current, target) {
     document.getElementById(current).style.display = 'none';
     document.getElementById(target).style.display = 'block';
@@ -34,13 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setFormMessage(loginForm, "error", "Invalid ID/password");
     });
 
-    createAccountForm.addEventListener("submit", e => {
-        e.preventDefault();
-
-        // Create Account
-
-        setFormMessage(createAccountForm, "error", "Invalid ID/email address/password");
-    });
 
     forgotPasswordForm.addEventListener("submit", e => {
         e.preventDefault();
