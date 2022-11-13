@@ -53,12 +53,13 @@ INSERT INTO students VALUES
 (1281205,'Isaac','Ortega','ortega@nyit.edu'),
 (1277182,'Christian','Pascal','csinoagp@nyit.edu'),
 (1187413,"O'Sean",'Blagrove','oblagrov@nyit.edu'),
-(1293960,'Henry','Yeung','');
+(1293960,'Henry','Yeung','cyeung03@nyit.edu');
 
 INSERT INTO professors VALUES
-('1','Wenja','Li','wli20@nyit.edu');
+(1,'Wenja','Li','wli20@nyit.edu');
 
-
-
-
-
+INSERT INTO password VALUES
+('passwordIsaac', 1281205, 1, 'ortega@nyit.edu', 'wli20@nyit.edu');
+('passwordChris', 1277182, 1, 'csinoagp@nyit.edu', 'wli20@nyit.edu');
+('passwordOSean', 1187413, 1, 'oblagrov@nyit.edu', 'wli20@nyit.edu');
+('passwordHenry', 1293960, 1, 'cyeung03@nyit.edu', 'wli20@nyit.edu');
