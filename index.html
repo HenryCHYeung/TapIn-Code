@@ -8,22 +8,22 @@
 <body>
     <div class="container">
         <div id="loginPage">
-            <form class="form" id="login">
+            <form class="form" id="login" action="/auth" method="post">
                 <h1 class="form__title">Login</h1>
                 <div class="form__message form__message--error"></div>
                 <div class="form__input-group">
-                    <input type="text" id="signupID" class="form__input" autofocus placeholder="Student/Professor ID">
+                    <input type="text" name="signinID" class="form__input" autofocus placeholder="Student/Professor ID" required>
                     <div class="form__input-error-message"></div>
                 </div>
                 <div class="form__input-group">
-                    <input type="password" class="form__input" placeholder="Password">
+                    <input type="password" name="signinPass" class="form__input" placeholder="Password" required>
                     <div class="form__input-error-message"></div>
                 </div>
                 <div class="radio__input-group">
                     <div>I'm signing in as a:</div>
-                    <input type="radio" class="radio__input" id="student" name="identity" value="student">
+                    <input type="radio" class="radio__input" id="studentLogin" name="identity" value="student">
                     <label for="student">Student</label>&nbsp&nbsp&nbsp
-                    <input type="radio" class="radio__input" id="prof" name="identity" value="prof">
+                    <input type="radio" class="radio__input" id="profLogin" name="identity" value="prof">
                     <label for="prof">Professor</label>
                 </div>
                 <button class="form__button" type="submit">Login</button>
@@ -47,9 +47,9 @@
                 </div>
                 <div class="radio__input-group">
                     <div>I'm a:</div>
-                    <input type="radio" class="radio__input" id="student" name="identity" value="student">
+                    <input type="radio" class="radio__input" id="studentPD" name="identity" value="student">
                     <label for="student">Student</label>&nbsp&nbsp&nbsp
-                    <input type="radio" class="radio__input" id="prof" name="identity" value="prof">
+                    <input type="radio" class="radio__input" id="profPD" name="identity" value="prof">
                     <label for="prof">Professor</label>
                 </div>
                 <button class="form__button" type="submit">Send me an email</button>
