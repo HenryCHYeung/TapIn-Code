@@ -26,26 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const createAccountForm = document.querySelector("#createAccount");
     const forgotPasswordForm = document.querySelector("#forgotPassword");
 
-    loginForm.addEventListener("submit", e => {
-        e.preventDefault();
-
-        // login
-
-        setFormMessage(loginForm, "error", "Invalid ID/password");
-    });
-
-    createAccountForm.addEventListener("submit", e => {
-        e.preventDefault();
-
-        // Create Account
-
-        setFormMessage(createAccountForm, "error", "Invalid ID/email address/password");
-    });
-
     forgotPasswordForm.addEventListener("submit", e => {
         e.preventDefault();
 
-        // Create Account
+        // Send email
 
         setFormMessage(forgotPasswordForm, "error", "Invalid ID/email address");
     });
