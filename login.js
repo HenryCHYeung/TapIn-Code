@@ -27,21 +27,39 @@ let db = new sqlite.Database('./tapin.db', function(err) {
 app.post('/auth', function(request, response) {
 	let userID = request.body.signinID;
 	let password = request.body.signinPass;
-    let sql = 'SELECT * FROM students WHERE studentID = ? AND studentPassword = ?';
+	let person = request.body.identity;
+    let sqlStu = 'SELECT * FROM students WHERE studentID = ? AND studentPassword = ?';
+	let sqlProf = 'SELECT * FROM professors WHERE profID = ? AND profPassword = ?';
 
 	if (userID && password) {
-		db.get(sql, [userID, password], function(error, row) {
-            if (error) throw error;
-			if (userID == row.studentID && password == row.studentPassword) {
-				request.session.loggedin = true;
-				request.session.username = userID;
-                console.log("Login successful");
-                response.send('Login successful! Welcome ' + row.stuFirstName + ' ' + row.stuLastName);
-			} else {
-				response.send('Incorrect ID and/or Password!');
-			}			
-			response.end();
-		});
+		if (person == "prof"){
+			db.get(sqlProf, [userID, password], function(error, row) {
+				if (error) throw error;
+				if (row != undefined && userID == row.profID && password == row.profPassword) {
+					request.session.loggedin = true;
+					request.session.username = userID;
+					console.log("Login successful");
+					response.send('Login successful! Welcome ' + row.profFirstName + ' ' + row.profLastName);
+				} else {
+					response.send('Incorrect ID and/or Password!');
+				}			
+				response.end();
+			});
+		} else if (person == "student") {
+			db.get(sqlStu, [userID, password], function(error, row) {
+				if (error) throw error;
+				if (row != undefined && userID == row.studentID && password == row.studentPassword) {
+					request.session.loggedin = true;
+					request.session.username = userID;
+					console.log("Login successful");
+					response.send('Login successful! Welcome ' + row.stuFirstName + ' ' + row.stuLastName);
+				} else {
+					response.send('Incorrect ID and/or Password!');
+				}			
+				response.end();
+			});
+		}
+		
 	} else {
 		response.send('Please enter ID and Password!');
 		response.end();
