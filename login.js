@@ -2,7 +2,17 @@ const sqlite = require('sqlite3').verbose();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const nodemailer = require('nodemailer');
 const app = express();
+
+var transporter = nodemailer.createTransport({
+	service: 'gmail',
+	rejectUnauthorized: false,
+	auth: {
+	  user: 'tapinproject123@gmail.com',
+	  pass: 'vmbeyvbuohrkrpoq'
+	}
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +51,7 @@ app.post('/auth', function(request, response) {
 					console.log("Login successful");
 					response.send('Login successful! Welcome ' + row.profFirstName + ' ' + row.profLastName);
 				} else {
-					response.send('Incorrect ID and/or Password!');
+					response.send('Incorrect ID and/or password!');
 				}			
 				response.end();
 			});
@@ -54,14 +64,74 @@ app.post('/auth', function(request, response) {
 					console.log("Login successful");
 					response.send('Login successful! Welcome ' + row.stuFirstName + ' ' + row.stuLastName);
 				} else {
-					response.send('Incorrect ID and/or Password!');
+					response.send('Incorrect ID and/or password!');
 				}			
 				response.end();
 			});
 		}
 		
 	} else {
-		response.send('Please enter ID and Password!');
+		response.send('Please enter ID and password!');
+		response.end();
+	}
+});
+
+app.post('/sendEmail', function(request, response) {
+	let userID = request.body.passwordID;
+	let userEmail = request.body.emailAddress;
+	let userPerson = request.body.identityPass;
+	let sqlStuPass = 'SELECT * FROM students WHERE studentID = ? AND studentEmail = ?';
+	let sqlProfPass = 'SELECT * FROM professors WHERE profID = ? AND profEmail = ?';
+
+	if (userID && userEmail) {
+		if (userPerson == "prof"){
+			db.get(sqlProfPass, [userID, userEmail], function(error, row) {
+				if (error) throw error;
+				if (row != undefined && userID == row.profID && userEmail == row.profEmail) {
+					var mailOptions = {
+						from: 'tapinProject123@gmail.com',
+						to: userEmail,
+						subject: 'Password for Tap In',
+						text: 'Hello ' + row.profFirstName + ' ' + row.profLastName + ', this is your password for Tap In: ' + row.profPassword
+					};
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+						  console.log(error);
+						} else {
+						  console.log('Email sent: ' + info.response);
+						}
+					});
+				} else {
+					response.send('ID and/or email does not exist.');
+				}			
+				response.end();
+			});
+		} else if (userPerson == "student") {
+			db.get(sqlStuPass, [userID, userEmail], function(error, row) {
+				if (error) throw error;
+				if (row != undefined && userID == row.studentID && userEmail == row.studentEmail) {
+					var mailOptions = {
+						from: 'tapinproject123@gmail.com',
+						to: userEmail,
+						subject: 'Password for Tap In',
+						text: 'Hello ' + row.stuFirstName + ' ' + row.stuLastName + ', this is your password for Tap In: ' + row.studentPassword
+					};
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+						  console.log(error);
+						} else {
+						  console.log('Email sent: ' + info.response);
+						}
+					});
+				} else {
+					response.send('ID and/or email does not exist.');
+				}			
+				response.end();
+			});
+		}
+		
+	} else {
+		response.send('Please enter ID and email!');
 		response.end();
 	}
 });

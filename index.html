@@ -8,7 +8,7 @@
 <body>
     <div class="container">
         <div id="loginPage">
-            <form class="form" id="login" action="/auth" method="post">
+            <form class="form loginForm" id="login" action="/auth" method="post">
                 <h1 class="form__title">Login</h1>
                 <div class="form__message form__message--error"></div>
                 <div class="form__input-group">
@@ -26,7 +26,7 @@
                     <input type="radio" class="radio__input" id="profLogin" name="identity" value="prof" required>
                     <label for="prof">Professor</label>
                 </div>
-                <button class="form__button" type="submit">Login</button>
+                <button class="form__button loginButton" type="submit" name="submitButton" value="login">Login</button>
                 <p class="form__text">
                     <a href="#" class="form__link" id="linkForgotPassword" onclick="swapBody('loginPage', 'forgotPage');">Forgot your password?</a>
                 </p>
@@ -36,23 +36,23 @@
 
 
         <div id="forgotPage" style="display:none">
-            <form class="form" id="forgotPassword">
+            <form class="form forgetForm" id="forgotPassword" action="/sendEmail" method="post">
                 <h1 class="form__title">Forgot your password?</h1>
                 <div class="form__message form__message--error"></div>
                 <div class="form__input-group">
-                    <input type="text" class="form__input" autofocus placeholder="Student/Professor ID">
+                    <input type="text" name="passwordID" class="form__input" autofocus placeholder="Student/Professor ID" required>
                 </div>
                 <div class="form__input-group">
-                    <input type="text" class="form__input" placeholder="Email Address">
+                    <input type="text" name="emailAddress" class="form__input" placeholder="Email Address" required>
                 </div>
                 <div class="radio__input-group">
                     <div>I'm a:</div>
-                    <input type="radio" class="radio__input" id="studentPD" name="identity" value="student">
+                    <input type="radio" class="radio__input" id="studentPD" name="identityPass" value="student" required>
                     <label for="student">Student</label>&nbsp&nbsp&nbsp
-                    <input type="radio" class="radio__input" id="profPD" name="identity" value="prof">
+                    <input type="radio" class="radio__input" id="profPD" name="identityPass" value="prof" required>
                     <label for="prof">Professor</label>
                 </div>
-                <button class="form__button" type="submit">Send me an email</button>
+                <button class="form__button forgetButton" type="submit" name="submitButton" value="sendEmail">Send me an email</button>
                 <p class="form__text">
                     <a href="#" class="form__link" id="linkLogin" onclick="swapBody('forgotPage', 'loginPage');">Back</a>
                 </p>

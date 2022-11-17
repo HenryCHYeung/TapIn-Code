@@ -21,31 +21,22 @@ function clearInputError(inputElement) {
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = "";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
+    $('button.loginButton').click( function() {
+        $('form.loginForm').submit();
+    });
+    $('button.forgetButton').click( function() {
+        $('form.forgetForm').submit();
+    });
+    
     const loginForm = document.querySelector("#login");
-    const createAccountForm = document.querySelector("#createAccount");
     const forgotPasswordForm = document.querySelector("#forgotPassword");
 
-    // forgotPasswordForm.addEventListener("submit", e => {
-    //     e.preventDefault();
-
-    //     // Send email
-
-    //     setFormMessage(forgotPasswordForm, "error", "Invalid ID/email address");
-    // });
-
-    document.querySelectorAll(".form__input").forEach(inputElement => {
-        inputElement.addEventListener("blur", e => {
-            if (e.target.id === "setPassword" && e.target.value.length > 0 && e.target.value.length < 9) {
-                setInputError(inputElement, "Password must be at least 9 characters in length");
-            }
-            if (e.target.id === "confirmPassword" && document.forms["createName"]["psd1"].value != document.forms["createName"]["psd2"].value) {
-                setInputError(inputElement, "Password does not match above");
-            }
-        });
-
-        inputElement.addEventListener("input", e => {
-            clearInputError(inputElement);
-        });
+    loginForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+    });
+    
+    forgotPasswordForm.addEventListener("submit", function(e) {
+        e.preventDefault();
     });
 });
