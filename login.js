@@ -47,9 +47,9 @@ app.post('/auth', function(request, response) {
 				if (error) throw error;
 				if (row != undefined && userID == row.profID && password == row.profPassword) {
 					request.session.loggedin = true;
-					request.session.username = userID;
+					request.session.username = row.profFirstName + ' ' + row.profLastName;
 					console.log("Login successful");
-					response.send('Login successful! Welcome ' + row.profFirstName + ' ' + row.profLastName);
+					response.redirect('/home');
 				} else {
 					response.send('Incorrect ID and/or password!');
 				}			
@@ -60,9 +60,9 @@ app.post('/auth', function(request, response) {
 				if (error) throw error;
 				if (row != undefined && userID == row.studentID && password == row.studentPassword) {
 					request.session.loggedin = true;
-					request.session.username = userID;
+					request.session.username = row.stuFirstName + ' ' + row.stuLastName;
 					console.log("Login successful");
-					response.send('Login successful! Welcome ' + row.stuFirstName + ' ' + row.stuLastName);
+					response.redirect('/home');
 				} else {
 					response.send('Incorrect ID and/or password!');
 				}			
@@ -134,6 +134,15 @@ app.post('/sendEmail', function(request, response) {
 		response.send('Please enter ID and email!');
 		response.end();
 	}
+});
+
+app.get('/home', function(request, response) {
+	if (request.session.loggedin) {
+		response.send('Welcome, ' + request.session.username + '!');
+	} else {
+		response.send('Please login to view this page!');
+	}
+	response.end();
 });
 
 app.listen(3000, function(err) {
