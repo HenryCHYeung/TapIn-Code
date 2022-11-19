@@ -36,7 +36,8 @@ INSERT OR REPLACE INTO students VALUES
 (1281205,'Isaac','Ortega','ortega@nyit.edu','passwordIsaac'),
 (1277182,'Christian','Pascal','csinoagp@nyit.edu','passwordChris'),
 (1187413,"O'Sean",'Blagrove','oblagrov@nyit.edu','passwordOSean'),
-(1293960,'Henry','Yeung','cyeung03@nyit.edu','passwordHenry');
+(1293960,'Henry','Yeung','cyeung03@nyit.edu','passwordHenry'),
+(1256578,'Kaba','Moussa','mkaba02@nyit.edu','passwordKaba');
 
 INSERT OR REPLACE INTO professors VALUES
 (1,'Wenjia','Li','wli20@nyit.edu','passwordLi');
