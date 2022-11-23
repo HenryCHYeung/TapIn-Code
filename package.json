@@ -1,7 +1,10 @@
 {
   "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "flashify": "^0.1.2",
     "nodemailer": "^6.8.0",
     "sqlite3": "^5.1.2"
   }

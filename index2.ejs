@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Sign in</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        <div id="forgotPage">
+            <form class="form forgetForm" id="forgotPassword" action="/sendEmail" method="post">
+                <h1 class="form__title">Forgot your password?</h1>
+                <div class="form__message">
+                    <% if (flash.error) { %>
+                        <div class="form__input-error-message"><%= flash.error%></div>
+                    <% } %>
+                    <% if (flash.message) { %>
+                        <div class="form__input-success-message"><%= flash.message%></div>
+                    <% } %>
+                </div>
+                <div class="form__input-group">
+                    <input type="text" name="passwordID" class="form__input" autofocus placeholder="Student/Professor ID" required>
+                </div>
+                <div class="form__input-group">
+                    <input type="text" name="emailAddress" class="form__input" placeholder="Email Address" required>
+                </div>
+                <div class="radio__input-group">
+                    <div>I'm a:</div>
+                    <input type="radio" class="radio__input" id="studentPD" name="identityPass" value="student" required>
+                    <label for="student">Student</label>&nbsp&nbsp&nbsp
+                    <input type="radio" class="radio__input" id="profPD" name="identityPass" value="prof" required>
+                    <label for="prof">Professor</label>
+                </div>
+                <button class="form__button forgetButton" type="submit" name="submitButton" value="sendEmail">Send me an email</button>
+                <p class="form__text">
+                    <a href="/login" class="form__link" type="submit" id="linkLogin">Back</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script src= "script.js"></script>
+</body>

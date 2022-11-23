@@ -3,6 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const flash = require('connect-flash');
+const flashify = require('flashify');
 const app = express();
 
 var transporter = nodemailer.createTransport({
@@ -14,18 +16,24 @@ var transporter = nodemailer.createTransport({
 	}
 });
 
+app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, './')));
-app.get('/', function(request, response) {
-    response.sendFile(path.join(__dirname + '/index.html'));
-});
-
 app.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true
 }));
+app.use(flash());
+app.use(flashify);
+
+app.get('/login', function(request, response) {
+	response.render(path.join(__dirname + '/index.ejs'));
+});
+app.get('/getPassword', function(request, response) {
+	response.render(path.join(__dirname + '/index2.ejs'));
+});
 
 let db = new sqlite.Database('./tapin.db', function(err) {
     if (err) {
@@ -51,9 +59,9 @@ app.post('/auth', function(request, response) {
 					console.log("Login successful");
 					response.redirect('/home');
 				} else {
-					response.send('Incorrect ID and/or password!');
+					request.flash('error', 'Incorrect ID and/or password');
+					response.redirect('back');
 				}			
-				response.end();
 			});
 		} else if (person == "student") {
 			db.get(sqlStu, [userID, password], function(error, row) {
@@ -64,9 +72,9 @@ app.post('/auth', function(request, response) {
 					console.log("Login successful");
 					response.redirect('/home');
 				} else {
-					response.send('Incorrect ID and/or password!');
+					request.flash('error', 'Incorrect ID and/or password');
+					response.redirect('back');
 				}			
-				response.end();
 			});
 		}
 		
@@ -101,10 +109,12 @@ app.post('/sendEmail', function(request, response) {
 						  console.log('Email sent: ' + info.response);
 						}
 					});
+					request.flash('message', 'Email has been sent.');
+					response.redirect('back');
 				} else {
-					response.send('ID and/or email does not exist.');
+					request.flash('error', 'ID and/or email does not exist.');
+					response.redirect('back');
 				}			
-				response.end();
 			});
 		} else if (userPerson == "student") {
 			db.get(sqlStuPass, [userID, userEmail], function(error, row) {
@@ -123,10 +133,12 @@ app.post('/sendEmail', function(request, response) {
 						  console.log('Email sent: ' + info.response);
 						}
 					});
+					request.flash('message', 'Email has been sent.');
+					response.redirect('back');
 				} else {
-					response.send('ID and/or email does not exist.');
+					request.flash('error', 'ID and/or email does not exist.');
+					response.redirect('back');
 				}			
-				response.end();
 			});
 		}
 		

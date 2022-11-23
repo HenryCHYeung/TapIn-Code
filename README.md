@@ -23,3 +23,7 @@ Separate logins for the professors and students added.
 11/17/2022
 "Send email" functionality completed in the "login.js" file. The module "Nodemailer" is used. The current modules used are:
 "Sqlite3", "Express", "Express-session", "Nodemailer".
+
+11/23/2022
+Made it so that a new page will not be loaded on failed login/email sending. Instead, flash messages are used to display the error. To achieve this, the original "index.html" file has been split into "index.ejs" and "index2.ejs", where the former is the login page and the latter is the forget password page. The modules "connect-flash", "flashify", and "ejs" are used. The current modules used are:
+"Sqlite3", "Express", "Express-session", "Nodemailer", "Connect-flash", "Flashify", "EJS".

@@ -84,10 +84,21 @@ body {
     border-color: var(--color_error);
 }
 
+.form__input--success {
+    color: var(--color_success);
+    border-color: var(--color_success);
+}
+
 .form__input-error-message {
-    margin-top: 0,5rem;
+    margin-top: 0.5rem;
     font-size: 0.85rem;
     color: var(--color_error);
+}
+
+.form__input-success-message {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color_success);
 }
 
 .radio__input-group {
