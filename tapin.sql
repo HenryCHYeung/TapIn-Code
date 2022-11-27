@@ -16,19 +16,21 @@ CREATE TABLE IF NOT EXISTS professors
 	profPassword		varchar(50)		NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS attendance
+CREATE TABLE IF NOT EXISTS csci318
 (
 	attendID		INT			IDENTITY(1,1)   PRIMARY KEY, 
-	attendClass		VARCHAR(50)		NOT NULL, 
 	attendDate		VARCHAR(50)		NOT NULL,
  	attendTime		VARCHAR(50)		NOT NULL,
   	studentID		INT			NOT NULL,
-	profID			INT			NOT NULL,
-    CONSTRAINT attendance_fk_studentid FOREIGN KEY (studentID)
+	stuFirstName		VARCHAR(50)		NOT NULL, 
+	stuLastName		VARCHAR(50)		NOT NULL,
+	
+	CONSTRAINT attendance_fk_studentid FOREIGN KEY (studentID)
 		REFERENCES students (studentID),
-        
-	CONSTRAINT attendance_fk_profid FOREIGN KEY (profID)
-		REFERENCES professors (profID)
+	CONSTRAINT attendance_fk_stuFirstName FOREIGN KEY (stuFirstName)
+		REFERENCES students (stuFirstName),
+	CONSTRAINT attendance_fk_stuLastName FOREIGN KEY (stuLastName)
+		REFERENCES students (stuLastName),
 );
 
 
