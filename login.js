@@ -28,10 +28,16 @@ app.use(session({
 app.use(flash());
 app.use(flashify);
 
+app.get('/', function(request, response) {
+	//request.session.isLoggedIn = false;
+	response.render(path.join(__dirname + '/index.ejs'));
+});
 app.get('/login', function(request, response) {
+	//request.session.isLoggedIn = false;
 	response.render(path.join(__dirname + '/index.ejs'));
 });
 app.get('/getPassword', function(request, response) {
+	//request.session.isLoggedIn = false;
 	response.render(path.join(__dirname + '/index2.ejs'));
 });
 
@@ -48,16 +54,17 @@ app.post('/auth', function(request, response) {
 	let person = request.body.identity;
     let sqlStu = 'SELECT * FROM students WHERE studentID = ? AND studentPassword = ?';
 	let sqlProf = 'SELECT * FROM professors WHERE profID = ? AND profPassword = ?';
+	request.session.isLoggedIn = false;
 
 	if (userID && password) {
 		if (person == "prof"){
 			db.get(sqlProf, [userID, password], function(error, row) {
 				if (error) throw error;
 				if (row != undefined && userID == row.profID && password == row.profPassword) {
-					request.session.loggedin = true;
+					request.session.profLoggedin = true;
 					request.session.username = row.profFirstName + ' ' + row.profLastName;
-					console.log("Login successful");
-					response.redirect('/home');
+					console.log("Professor login successful");
+					response.render(path.join(__dirname + '/professorlanding.ejs'), {userID: row.profID, username: request.session.username, isLoggedIn: request.session.profLoggedin});
 				} else {
 					request.flash('error', 'Incorrect ID and/or password');
 					response.redirect('back');
