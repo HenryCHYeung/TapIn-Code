@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS csci318
 (
 	attendID		INT			IDENTITY(1,1)   PRIMARY KEY, 
 	studentID		INT			NOT NULL,
-	attendDate		VARCHAR(50)		NOT NULL,
- 	attendTime		VARCHAR(50)		NOT NULL,
+	attendDate		DATE			NOT NULL,
+ 	attendTime		TIME			NOT NULL,
 	
 	CONSTRAINT attendance_fk_studentid FOREIGN KEY (studentID)
 		REFERENCES students (studentID)
@@ -37,3 +37,10 @@ INSERT OR REPLACE INTO students VALUES
 
 INSERT OR REPLACE INTO professors VALUES
 (1,'Wenjia','Li','wli20@nyit.edu','passwordLi');
+
+INSERT OR REPLACE INTO csci318 VALUES
+(1,1281205,2022-11-28, 16:19:24);
+(2,1277182,2022-11-28, 16:20:12);
+(3,1187413,2022-11-28, 16:15:54);
+(4,1293960,2022-11-28, 16:14:01);
+(5,1256578,2022-11-28, 16:25:59);
