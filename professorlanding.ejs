@@ -23,7 +23,7 @@
             <h2 class="course-text">CSCI <br>185</h2>
         </div>
 
-        <div class="column-4 course-2">
+        <div class="column-4 course-2" onclick="showElement('CSCI318Modal');">
             <h2 class="course-text">CSCI <br>318</h2>
         </div>
 
@@ -37,7 +37,7 @@
             <h2 class="course-text">CSCI <br> DESIGN</h2>
         </div>
 
-        <div class="column-4 addCourse-icon" onclick="displayModal();">
+        <div class="column-4 addCourse-icon">
             <h2 class="course-text"> + </h2> 
             <style>
                 h2{text-align: center;}
@@ -49,11 +49,25 @@
         </div>
     <%}%>
 
-    <div id ="newClassModal" class="modal">
+    <div id ="CSCI318Modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal();">&times;</span>
-            <h1>Create Course</h1>
-            <div>Course Name: <input type="text" autofocus placeholder="Course Name" required></div>
+            <span class="close" onclick="hideElement('CSCI318Modal'); switchButtonView();">&times;</span>
+            <h1><%= username%>: CSCI-318</h1>
+            <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
+            <button>Update Attendance</button>
+            <div id="viewOptions" style="display:none">
+                <h3>View By</h3>
+                <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
+                <button id="dateButton" onclick="toggleView('dateView', 'studentView');">Date</button>
+                <div id="studentView" style="display:none">
+                    <select name="selectStudent" id="stuList">
+                        <option disabled selected>Select Student...</option>
+                    </select>
+                </div>
+                <div id="dateView" style="display:none">
+                    <div>Date View</div>
+                </div>
+            </div>
         </div>
     </div>
 
