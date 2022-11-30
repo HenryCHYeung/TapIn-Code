@@ -54,6 +54,7 @@ app.post('/auth', function(request, response) {
 	let person = request.body.identity;
     let sqlStu = 'SELECT * FROM students WHERE studentID = ? AND studentPassword = ?';
 	let sqlProf = 'SELECT * FROM professors WHERE profID = ? AND profPassword = ?';
+	let courses = [];
 	request.session.isLoggedIn = false;
 
 	if (userID && password) {
@@ -64,7 +65,20 @@ app.post('/auth', function(request, response) {
 					request.session.profLoggedin = true;
 					request.session.username = row.profFirstName + ' ' + row.profLastName;
 					console.log("Professor login successful");
-					response.render(path.join(__dirname + '/professorlanding.ejs'), {userID: row.profID, username: request.session.username, isLoggedIn: request.session.profLoggedin});
+					db.all('SELECT DISTINCT classID FROM attendance WHERE profID = ?', [userID], function(error, rows) {
+						if (error) throw error;
+						rows.forEach(function(r) {
+							courses.push(r.classID);
+							console.log(courses);
+							var profInfo = {
+								userID: row.profID,
+								username: request.session.username,
+								isLoggedIn: request.session.profLoggedin,
+								courses: courses
+							};
+							response.render(path.join(__dirname + '/professorlanding.ejs'), profInfo);
+						});
+					});
 				} else {
 					request.flash('error', 'Incorrect ID and/or password');
 					response.redirect('back');
@@ -155,13 +169,17 @@ app.post('/sendEmail', function(request, response) {
 	}
 });
 
-app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
+app.get('/course', function(req, res) {
+	db.get('SELECT * FROM professors WHERE profID = ?', [req.query.id], function(error, row) {
+		if (error) throw error;
+		var info = {
+			userID: req.query.id,
+			username: req.session.username,
+			courseName: req.query.courseName,
+			isLoggedIn: req.query.loggedIn
+		};
+		res.render(path.join(__dirname + '/courseInfo.ejs'), info);
+	});
 });
 
 app.listen(3000, function(err) {

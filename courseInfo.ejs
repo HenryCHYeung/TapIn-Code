@@ -14,24 +14,31 @@
     <h2 class="section-heading">Professor Portal</h2>
     <link rel="stylesheet" href="styles.css">
 
-    <% if (isLoggedIn) {%>    
-        <div>Welcome! <%= username%></div>
-        
-        <!--Course tiles-->
-        <% if (courses.length > 0) {%>
-            <% for (var i = 0; i < courses.length; i++) { %>
-                <a class="column-4 course" href="/course?id=<%= userID %>&courseName=<%= courses[i] %>&loggedIn=<%= isLoggedIn %>">
-                    <h2 class="course-text"><%= courses[i]%></h2>
-                </a>
-            <% } %>
-        <% } else { %>
-            <div>This professor has no courses.</div>
-        <% } %>
+    <%if (isLoggedIn) {%>    
+        <div><h1><%= username%>: <%= courseName%></h1></div>
     <%} else {%>
         <div>
             <h2>Please login as a professor to view this page.</h2>
         </div>
     <%}%>
+
+    <div>
+        <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
+        <button>Update Attendance</button>
+        <div id="viewOptions" style="display:none">
+            <h3>View By</h3>
+            <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
+            <button id="dateButton" onclick="toggleView('dateView', 'studentView');">Date</button>
+            <div id="studentView" style="display:none">
+                <select name="selectStudent" id="stuList">
+                    <option disabled selected>Select Student...</option>
+                </select>
+            </div>
+            <div id="dateView" style="display:none">
+                <div>Date View</div>
+            </div>
+        </div>
+    </div>
 
     <!--Footer-->
 
