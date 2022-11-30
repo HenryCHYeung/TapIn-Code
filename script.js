@@ -20,23 +20,3 @@ function clearInputError(inputElement) {
     inputElement.classList.remove("form__input--error");
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = "";
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-    $('button.loginButton').click( function() {
-        $('form.loginForm').submit();
-    });
-    $('button.forgetButton').click( function() {
-        $('form.forgetForm').submit();
-    });
-    
-    const loginForm = document.querySelector("#login");
-    const forgotPasswordForm = document.querySelector("#forgotPassword");
-
-    loginForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-    });
-    
-    forgotPasswordForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-    });
-});

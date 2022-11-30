@@ -15,30 +15,34 @@
     <link rel="stylesheet" href="styles.css">
 
     <%if (isLoggedIn) {%>    
-        <div><h1><%= username%>: <%= courseName%></h1></div>
+        <div><h1><%= username%>: <span id="nameCourse"><%= courseName%></span></h1></div>
+        <h4>Professor ID: <%= userID%></h4>
+        <div>
+            <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
+            <button>Update Attendance</button>
+            <div id="viewOptions" style="display:none">
+                <h3>View By</h3>
+                <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
+                <button id="dateButton" onclick="toggleView('dateView', 'studentView');">Date</button>
+                <div id="studentView" style="display:none">
+                    <select name="selectStudent" id="stuList">
+                        <option disabled selected>Select Student...</option>
+                        <% studentList.forEach(function(student) { %>
+                            <option value="<%= student.studentID%>"><%= student.studentID%>: <%= student.studentName%></option>
+                        <% }); %>
+                    </select>
+                    <div id="studentTable"></div>
+                </div>
+                <div id="dateView" style="display:none">
+                    <div>Date View</div>
+                </div>
+            </div>
+        </div>
     <%} else {%>
         <div>
             <h2>Please login as a professor to view this page.</h2>
         </div>
     <%}%>
-
-    <div>
-        <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
-        <button>Update Attendance</button>
-        <div id="viewOptions" style="display:none">
-            <h3>View By</h3>
-            <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
-            <button id="dateButton" onclick="toggleView('dateView', 'studentView');">Date</button>
-            <div id="studentView" style="display:none">
-                <select name="selectStudent" id="stuList">
-                    <option disabled selected>Select Student...</option>
-                </select>
-            </div>
-            <div id="dateView" style="display:none">
-                <div>Date View</div>
-            </div>
-        </div>
-    </div>
 
     <!--Footer-->
 
@@ -57,6 +61,7 @@
         </p>
 
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src= "professorlanding.js"></script>
 </body>
 

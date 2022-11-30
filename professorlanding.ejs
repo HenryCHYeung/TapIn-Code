@@ -20,7 +20,7 @@
         <!--Course tiles-->
         <% if (courses.length > 0) {%>
             <% for (var i = 0; i < courses.length; i++) { %>
-                <a class="column-4 course" href="/course?id=<%= userID %>&courseName=<%= courses[i] %>&loggedIn=<%= isLoggedIn %>">
+                <a class="column-4 course" href="/course?courseName=<%= courses[i] %>">
                     <h2 class="course-text"><%= courses[i]%></h2>
                 </a>
             <% } %>
@@ -50,7 +50,6 @@
         </p>
 
     </div>
-    <script src= "professorlanding.js"></script>
 </body>
 
 </html>

@@ -54,31 +54,29 @@ app.post('/auth', function(request, response) {
 	let person = request.body.identity;
     let sqlStu = 'SELECT * FROM students WHERE studentID = ? AND studentPassword = ?';
 	let sqlProf = 'SELECT * FROM professors WHERE profID = ? AND profPassword = ?';
+	let list = [];
 	let courses = [];
-	request.session.isLoggedIn = false;
 
 	if (userID && password) {
 		if (person == "prof"){
-			db.get(sqlProf, [userID, password], function(error, row) {
+			db.get(sqlProf, [userID, password], async function(error, row) {
 				if (error) throw error;
 				if (row != undefined && userID == row.profID && password == row.profPassword) {
 					request.session.profLoggedin = true;
+					request.session.profId = userID;
 					request.session.username = row.profFirstName + ' ' + row.profLastName;
 					console.log("Professor login successful");
-					db.all('SELECT DISTINCT classID FROM attendance WHERE profID = ?', [userID], function(error, rows) {
-						if (error) throw error;
-						rows.forEach(function(r) {
-							courses.push(r.classID);
-							console.log(courses);
-							var profInfo = {
-								userID: row.profID,
-								username: request.session.username,
-								isLoggedIn: request.session.profLoggedin,
-								courses: courses
-							};
-							response.render(path.join(__dirname + '/professorlanding.ejs'), profInfo);
-						});
-					});
+					list = await db_all('SELECT DISTINCT classID FROM attendance WHERE profID = ?', [userID]);
+					for (var i = 0; i < list.length; i++) {
+						courses.push(list[i].classID);
+					}
+					var profInfo = {
+						userID: row.profID,
+						username: request.session.username,
+						isLoggedIn: request.session.profLoggedin,
+						courses: courses
+					};
+					response.render(path.join(__dirname + '/professorlanding.ejs'), profInfo);
 				} else {
 					request.flash('error', 'Incorrect ID and/or password');
 					response.redirect('back');
@@ -88,7 +86,8 @@ app.post('/auth', function(request, response) {
 			db.get(sqlStu, [userID, password], function(error, row) {
 				if (error) throw error;
 				if (row != undefined && userID == row.studentID && password == row.studentPassword) {
-					request.session.loggedin = true;
+					request.session.stuLoggedin = true;
+					request.session.stuId = userID;
 					request.session.username = row.stuFirstName + ' ' + row.stuLastName;
 					console.log("Login successful");
 					response.redirect('/home');
@@ -169,17 +168,38 @@ app.post('/sendEmail', function(request, response) {
 	}
 });
 
-app.get('/course', function(req, res) {
-	db.get('SELECT * FROM professors WHERE profID = ?', [req.query.id], function(error, row) {
-		if (error) throw error;
-		var info = {
-			userID: req.query.id,
-			username: req.session.username,
-			courseName: req.query.courseName,
-			isLoggedIn: req.query.loggedIn
-		};
-		res.render(path.join(__dirname + '/courseInfo.ejs'), info);
+async function db_all(query, params) {
+	return new Promise(function(resolve, reject) {
+		db.all(query, params, function(error, rows) {
+			if (error) return reject(error);
+			resolve(rows);
+		});
 	});
+}
+
+app.get('/course', async function(req, res) {
+	let list = await db_all('SELECT * FROM attendance WHERE profID = ? AND classID = ?', [req.session.profId, req.query.courseName]);
+	let studentList = new Array(list.length).fill({studentID: '', studentName: ''});
+	let currentStu = [];
+	for (var i = 0; i < list.length; i++) {
+		currentStu = await db_all('SELECT * FROM students WHERE studentID = ?', [list[i].studentID]);
+		studentList[i] = {studentID: list[i].studentID, studentName: currentStu[0].stuFirstName + ' ' + currentStu[0].stuLastName};
+	}
+	var info = {
+		userID: req.session.profId,
+		username: req.session.username,
+		courseName: req.query.courseName,
+		isLoggedIn: req.session.profLoggedin,
+		studentList: studentList
+	};
+	res.render(path.join(__dirname + '/courseInfo.ejs'), info);
+});
+
+app.get('/getStudent', async function(req, res) {
+	let studentID = req.query.selectedID;
+	let currentCourse = req.query.course;
+	let list = await db_all('SELECT * FROM attendance WHERE studentID = ? AND classID = ?', [studentID, currentCourse]);
+	res.send(list);
 });
 
 app.listen(3000, function(err) {
