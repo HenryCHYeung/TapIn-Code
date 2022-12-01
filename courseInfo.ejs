@@ -34,7 +34,13 @@
                     <div id="studentTable"></div>
                 </div>
                 <div id="dateView" style="display:none">
-                    <div>Date View</div>
+                    <select name="selectDate" id="daList">
+                        <option disabled selected>Select Date...</option>
+                        <% dateList.forEach(function(date) { %>
+                            <option value="<%= date%>"><%= date%></option>
+                        <% }); %>
+                    </select>
+                    <div id="dateTable"></div>
                 </div>
             </div>
         </div>

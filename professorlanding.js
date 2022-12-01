@@ -23,6 +23,32 @@ $('#stuList').change(function() {
     });
 });
 
+$('#daList').change(function() {
+    var dateID = $('#daList').val();
+    var courseName = document.getElementById("nameCourse").innerHTML;
+    $.ajax({
+        type: 'GET',
+        data: {selectedDate: dateID, course: courseName},
+        url: '/getDate',
+        success: function(data) {
+            if (document.getElementById("dateTable2") != undefined) {
+                document.getElementById("dateTable2").remove();
+            }
+            var dateTableDiv = document.getElementById("dateTable");
+            var dateTable = document.createElement("table");
+            dateTable.id = "dateTable2";
+            let innerT = "";
+            innerT += "<tr class='firstRow'><th>Student ID</th><th>Student Name</th><th>Time</th></tr>";
+            for (var i = 0; i < data.length; i++) {
+                innerT += "<tr><td>" + data[i].studentID + "</td><td>" + data[i].studentName
+                 + "</td><td>" + data[i].attendTime + "</td></tr>";
+            }
+            dateTable.innerHTML = innerT;
+            dateTableDiv.append(dateTable);
+        }
+    });
+});
+
 function switchButtonView() {
     var button = document.getElementById("showAttend");
     var options = document.getElementById("viewOptions");

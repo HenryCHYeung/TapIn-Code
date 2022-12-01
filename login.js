@@ -179,18 +179,25 @@ async function db_all(query, params) {
 
 app.get('/course', async function(req, res) {
 	let list = await db_all('SELECT * FROM attendance WHERE profID = ? AND classID = ?', [req.session.profId, req.query.courseName]);
+	let list2 = await db_all('SELECT DISTINCT attendDate FROM attendance WHERE profID = ? AND classID = ?', [req.session.profId, req.query.courseName]);
 	let studentList = new Array(list.length).fill({studentID: '', studentName: ''});
+	let dateList = [];
 	let currentStu = [];
+	
 	for (var i = 0; i < list.length; i++) {
 		currentStu = await db_all('SELECT * FROM students WHERE studentID = ?', [list[i].studentID]);
 		studentList[i] = {studentID: list[i].studentID, studentName: currentStu[0].stuFirstName + ' ' + currentStu[0].stuLastName};
+	}
+	for (var j = 0; j < list2.length; j++) {
+		dateList.push(list[j].attendDate);
 	}
 	var info = {
 		userID: req.session.profId,
 		username: req.session.username,
 		courseName: req.query.courseName,
 		isLoggedIn: req.session.profLoggedin,
-		studentList: studentList
+		studentList: studentList,
+		dateList: dateList
 	};
 	res.render(path.join(__dirname + '/courseInfo.ejs'), info);
 });
@@ -199,6 +206,17 @@ app.get('/getStudent', async function(req, res) {
 	let studentID = req.query.selectedID;
 	let currentCourse = req.query.course;
 	let list = await db_all('SELECT * FROM attendance WHERE studentID = ? AND classID = ?', [studentID, currentCourse]);
+	res.send(list);
+});
+
+app.get('/getDate', async function(req, res) {
+	let date = req.query.selectedDate;
+	let currentCourse = req.query.course;
+	let list = await db_all('SELECT * FROM attendance WHERE attendDate = ? AND classID = ?', [date, currentCourse]);
+	for (var i = 0; i < list.length; i++) {
+		var students = await db_all('SELECT * FROM students WHERE studentID = ?', [list[i].studentID]);
+		list[i].studentName = students[0].stuFirstName + ' ' + students[0].stuLastName;
+	}
 	res.send(list);
 });
 
