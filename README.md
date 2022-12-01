@@ -25,5 +25,11 @@ Separate logins for the professors and students added.
 "Sqlite3", "Express", "Express-session", "Nodemailer".
 
 11/23/2022
-Made it so that a new page will not be loaded on failed login/email sending. Instead, flash messages are used to display the error. To achieve this, the original "index.html" file has been split into "index.ejs" and "index2.ejs", where the former is the login page and the latter is the forget password page. The modules "connect-flash", "flashify", and "ejs" are used. The current modules used are:
+Made it so that a new page will not be loaded on failed login/email sending. Instead, flash messages are used to display the error. To achieve this, the original "index.html" file has been split into "index.ejs" and "index2.ejs", where the former is the login page and the latter is the forget password page. The format "EJS" is used because it allows the HTML to be generated dynamically with JavaScript. The modules "connect-flash", "flashify", and "ejs" are used. The current modules used are:
 "Sqlite3", "Express", "Express-session", "Nodemailer", "Connect-flash", "Flashify", "EJS".
+
+11/26/2022
+The files "professorlanding.html", "professorlanding.js" and "styles.css" are added. This is the frontend side of the professor page.
+
+11/30/2022
+The file "professorlanding.html" has been modified into "professorlanding.ejs". This is to make the page load dynamically based on the number of courses that are linked to the professor. Once in the page to view attendance (within the file "courseInfo.ejs"), the list of students and list of dates are also dynamically generated based on what's in the database. The results will then be displayed on a table. This functionality is made possible using async functions and promises within "login.js", as well as JQuery and AJAX within "courseInfo.ejs" and "professorlanding.js".
