@@ -54,16 +54,32 @@ function switchButtonView() {
     var options = document.getElementById("viewOptions");
     var studentView = document.getElementById("studentView");
     var dateView = document.getElementById("dateView");
+    var update = document.getElementById("addDate");
 
-    if (button.innerHTML == "View Attendance") {
+    if (button.innerHTML == "View/Edit Attendance") {
         button.innerHTML = "Hide Attendance";
         options.style.display = "block";
+        update.style.display = "none";
     } else if (button.innerHTML == "Hide Attendance") {
-        button.innerHTML = "View Attendance";
+        button.innerHTML = "View/Edit Attendance";
         options.style.display = "none";
         studentView.style.display = "none";
         dateView.style.display = "none";
     }
+}
+
+function hideAttendance() {
+    var button = document.getElementById("showAttend");
+    var options = document.getElementById("viewOptions");
+    var studentView = document.getElementById("studentView");
+    var dateView = document.getElementById("dateView");
+    var update = document.getElementById("addDate");
+
+    button.innerHTML = "View/Edit Attendance";
+    options.style.display = "none";
+    studentView.style.display = "none";
+    dateView.style.display = "none";
+    update.style.display = "block";
 }
 
 function toggleView(show, hide) {

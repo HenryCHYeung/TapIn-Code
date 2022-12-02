@@ -18,8 +18,8 @@
         <div><h1><%= username%>: <span id="nameCourse"><%= courseName%></span></h1></div>
         <h4>Professor ID: <%= userID%></h4>
         <div>
-            <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
-            <button>Update Attendance</button>
+            <button id="showAttend" onclick="switchButtonView();">View/Edit Attendance</button>
+            <button onclick="hideAttendance();">Add date</button>
             <div id="viewOptions" style="display:none">
                 <h3>View By</h3>
                 <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
@@ -42,6 +42,13 @@
                     </select>
                     <div id="dateTable"></div>
                 </div>
+            </div>
+            <div id="addDate" style="display:none">
+                <form id="createDate">
+                    <label for="selectDate">Select a date:</label>
+                    <input type="date" id="selectDate" name="selectDate">
+                    <input type="submit">
+                </form>
             </div>
         </div>
     <%} else {%>
