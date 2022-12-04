@@ -177,8 +177,17 @@ async function db_all(query, params) {
 	});
 }
 
+async function db_run(query, params) {
+	return new Promise(function(resolve, reject) {
+		db.run(query, params, function(error) {
+			if (error) return reject(error);
+			resolve(this);
+		});
+	});
+}
+
 app.get('/course', async function(req, res) {
-	let list = await db_all('SELECT * FROM attendance WHERE profID = ? AND classID = ?', [req.session.profId, req.query.courseName]);
+	let list = await db_all('SELECT DISTINCT studentID FROM attendance WHERE profID = ? AND classID = ?', [req.session.profId, req.query.courseName]);
 	let list2 = await db_all('SELECT DISTINCT attendDate FROM attendance WHERE profID = ? AND classID = ?', [req.session.profId, req.query.courseName]);
 	let studentList = new Array(list.length).fill({studentID: '', studentName: ''});
 	let dateList = [];
@@ -189,7 +198,7 @@ app.get('/course', async function(req, res) {
 		studentList[i] = {studentID: list[i].studentID, studentName: currentStu[0].stuFirstName + ' ' + currentStu[0].stuLastName};
 	}
 	for (var j = 0; j < list2.length; j++) {
-		dateList.push(list[j].attendDate);
+		dateList.push(list2[j].attendDate);
 	}
 	var info = {
 		userID: req.session.profId,
@@ -218,6 +227,95 @@ app.get('/getDate', async function(req, res) {
 		list[i].studentName = students[0].stuFirstName + ' ' + students[0].stuLastName;
 	}
 	res.send(list);
+});
+
+app.get('/submitDate', async function(req, res) {
+	let newDate = req.query.dateValue;
+	let startTime = req.query.startTime;
+	let course = req.query.course;
+	let id = req.query.id;
+	let list = await db_all('SELECT DISTINCT studentID FROM attendance WHERE classID = ?', [course]);
+	let dateList = await db_all('SELECT * FROM attendance WHERE attendDate = ?', [newDate]);
+	let insertQuery = 'INSERT INTO attendance VALUES(?, ?, ?, ?, ?, NULL)';
+	let listOfStudents = new Array(list.length).fill({studentID: '', studentName: ''});
+	let currentStu = [];
+	let message = "";
+	for (var i = 0; i < list.length; i++) {
+		currentStu = await db_all('SELECT * FROM students WHERE studentID = ?', [list[i].studentID]);
+		listOfStudents[i] = {studentID: list[i].studentID, studentName: currentStu[0].stuFirstName + ' ' + currentStu[0].stuLastName};
+	}
+	if (dateList.length > 0) {
+		message = "Date already exists";
+	} else {
+		try {
+			if (newDate == "") throw "Invalid Input";
+			if (startTime == "") throw "Invalid Input";
+			for (var j = 0; j < listOfStudents.length; j++) {
+				await db_run(insertQuery, [id, course, listOfStudents[j].studentID, newDate, startTime]);
+			}
+			message = "Date added";
+		} catch(e) {
+			console.log(e);
+			message = e;
+		}	
+	}
+	res.send({message: message, listOfStudents: listOfStudents});
+});
+
+app.get('/liveAttend', async function(req, res) {
+	let inputID = req.query.inputValue;
+	let course = req.query.course;
+	let id = req.query.id;
+	let date = req.query.currentDate;
+	let time = req.query.currentTime;
+	let validStudent = false;
+	let notSignedYet = false;
+	let message = "";
+	let stuListQuery = 'SELECT DISTINCT studentID FROM attendance WHERE classID = ? AND profID = ? AND attendDate = ?';
+	let studentIDList = await db_all(stuListQuery, [course, id, date]);
+	let timeListQuery = 'SELECT * FROM attendance WHERE classID = ? AND profID = ? AND attendDate = ?';
+	let timeList = await db_all(timeListQuery, [course, id, date]);
+	let startTime = timeList[0].startTime;
+	let listOfStudents = new Array(studentIDList.length).fill({studentID: '', studentName: ''});
+	currentStu = [];
+	for (var i = 0; i < studentIDList.length; i++) {
+		currentStu = await db_all('SELECT * FROM students WHERE studentID = ?', [studentIDList[i].studentID]);
+		listOfStudents[i] = {studentID: studentIDList[i].studentID, studentName: currentStu[0].stuFirstName + ' ' + currentStu[0].stuLastName};
+		if (inputID == studentIDList[i].studentID) {
+			validStudent = true;
+			var checkQuery = 'SELECT * FROM attendance WHERE classID = ? AND profID = ? AND attendDate = ? AND studentID = ?';
+			var existingTime = await db_all(checkQuery, [course, id, date, inputID]);
+			if (existingTime[0].attendTime == null) {
+				notSignedYet = true;
+			}
+		}
+	}
+	if (validStudent && notSignedYet) {
+		message = "Student attendance has been recorded";
+		var updateQuery = 'UPDATE attendance SET attendTime = ? WHERE classID = ? AND profID = ? AND attendDate = ? and studentID = ?';
+		await db_run(updateQuery, [time, course, id, date, inputID]);
+	} else if (validStudent && !notSignedYet) {
+		message = "Student has already signed in on this date";
+	} else {
+		message = "Student does not exist";
+	}
+	res.send({message: message, listOfStudents: listOfStudents, startTime: startTime});
+});
+
+app.get('/removeDate', async function(req, res) {
+	let date = req.query.dateToRemove;
+	let course = req.query.course;
+	let id = req.query.id;
+	let deleteQuery = 'DELETE FROM attendance WHERE attendDate = ? AND classID = ? AND profID = ?';
+	await db_run(deleteQuery, [date, course, id]);
+	let message = "";
+
+	if (date == "") {
+		message = "Please select a date.";
+	} else {
+		message = "The date " + date + " has been removed."
+	}
+	res.send(message);
 });
 
 app.listen(3000, function(err) {

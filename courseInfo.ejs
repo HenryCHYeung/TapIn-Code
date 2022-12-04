@@ -16,10 +16,11 @@
 
     <%if (isLoggedIn) {%>    
         <div><h1><%= username%>: <span id="nameCourse"><%= courseName%></span></h1></div>
-        <h4>Professor ID: <%= userID%></h4>
+        <h4>Professor ID: <span id="professorID"><%= userID%></span></h4>
         <div>
-            <button id="showAttend" onclick="switchButtonView();">View/Edit Attendance</button>
-            <button onclick="hideAttendance();">Add date</button>
+            <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
+            <button id="dateButton" onclick="hideAttendance();">Add date</button>
+            <button id="removeButton" onclick="removeDateButton();">Remove date</button>
             <div id="viewOptions" style="display:none">
                 <h3>View By</h3>
                 <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
@@ -46,9 +47,43 @@
             <div id="addDate" style="display:none">
                 <form id="createDate">
                     <label for="selectDate">Select a date:</label>
-                    <input type="date" id="selectDate" name="selectDate">
-                    <input type="submit">
+                    <input type="date" id="selectDate" name="selectDate" required>
+                    <label for="selectTime">Select starting time:</label>
+                    <input type="time" id="selectTime" name="selectTime" required>
+                    <button type="submit" id="submitDate">Submit</button>
                 </form>
+                <div id="dateMsg"></div>
+                <div id="doAttendance" style="display:none">
+                    <div>Taking Attendance for the date: <span id="currentDate"></span></div>
+                    <div>The starting time is: <span id="displayStart"></span></div>
+                    <div>Current Time: <span id="tickingClock"></span></div>
+                    <form id="takeAttendace">
+                        <input type="text" id="timeID" name="timeID" autofocus placeholder="Student ID" required>
+                        <button type="submit" id="submitID">Submit</button>
+                    </form>
+                    <div id="attendMsg"></div>
+                    <table id="attendTable">
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Sign-in Time</th>
+                        </tr>
+                    </table>
+                    <button id="doneRefresh" onclick="window.location.reload();">Done</button>
+                </div>
+            </div>
+            <div id="removeDate" style="display:none">
+                <h4>Select Date to Remove:</h4>
+                <form id="removeDateList">
+                    <select name="selectRemoveDate" id="removeList">
+                        <% dateList.forEach(function(date) { %>
+                            <option value="<%= date%>"><%= date%></option>
+                        <% }); %>
+                    </select>
+                    <button type="submit" id="submitRemove">Submit</button>
+                </form>
+                <div id ="removeMsg"></div>
+                <button id="removeRefresh" style="display:none" onclick="window.location.reload();">Back</button>
             </div>
         </div>
     <%} else {%>
