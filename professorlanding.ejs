@@ -16,6 +16,9 @@
 
     <% if (isLoggedIn) {%>    
         <div>Welcome! <%= username%></div>
+        <form action="/logout" method="get">
+            <button type="submit" >Logout</button>
+        </form>
         
         <!--Course tiles-->
         <% if (courses.length > 0) {%>

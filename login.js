@@ -168,6 +168,16 @@ app.post('/sendEmail', function(request, response) {
 	}
 });
 
+app.get('/logout', function(request, response) {
+	console.log("running");
+	if (request.session) {
+		request.session.destroy(function(error) {
+			if (error) throw error;
+			response.render(path.join(__dirname + '/index.ejs'));
+		});
+	}
+});
+
 async function db_all(query, params) {
 	return new Promise(function(resolve, reject) {
 		db.all(query, params, function(error, rows) {

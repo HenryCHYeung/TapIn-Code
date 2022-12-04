@@ -17,6 +17,7 @@
     <%if (isLoggedIn) {%>    
         <div><h1><%= username%>: <span id="nameCourse"><%= courseName%></span></h1></div>
         <h4>Professor ID: <span id="professorID"><%= userID%></span></h4>
+        <button id="backButton" onclick="history.back();">Back to Dashboard</button>
         <div>
             <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
             <button id="dateButton" onclick="hideAttendance();">Add date</button>

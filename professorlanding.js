@@ -83,6 +83,7 @@ document.getElementById("submitDate").addEventListener("click", function(event) 
     var msgDiv = document.getElementById("dateMsg");
     var showDate = document.getElementById("currentDate");
     var displayStart = document.getElementById("displayStart");
+    var backButton = document.getElementById("backButton");
 
     $.ajax({
         type: 'GET',
@@ -95,6 +96,7 @@ document.getElementById("submitDate").addEventListener("click", function(event) 
                 clock.disabled = true;
                 subButton.disabled = true;
                 addDateButton.disabled = true;
+                backButton.disabled = true;
                 doAttend.style.display = "block";
                 showDate.innerHTML = dateValue;
                 displayStart.innerHTML = startTime;
