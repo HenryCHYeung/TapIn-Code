@@ -33,3 +33,6 @@ The files "professorlanding.html", "professorlanding.js" and "styles.css" are ad
 
 11/30/2022
 The file "professorlanding.html" has been modified into "professorlanding.ejs". This is to make the page load dynamically based on the number of courses that are linked to the professor. Once in the page to view attendance (within the file "courseInfo.ejs"), the list of students and list of dates are also dynamically generated based on what's in the database. The results will then be displayed on a table. This functionality is made possible using async functions and promises within "login.js", as well as JQuery and AJAX within "courseInfo.ejs" and "professorlanding.js".
+
+12/03/2022
+The attendance functionality has been completed, which includes options to add/remove dates and select starting time.
