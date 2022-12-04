@@ -83,14 +83,25 @@ app.post('/auth', function(request, response) {
 				}			
 			});
 		} else if (person == "student") {
-			db.get(sqlStu, [userID, password], function(error, row) {
+			db.get(sqlStu, [userID, password], async function(error, row) {
 				if (error) throw error;
 				if (row != undefined && userID == row.studentID && password == row.studentPassword) {
 					request.session.stuLoggedin = true;
 					request.session.stuId = userID;
 					request.session.username = row.stuFirstName + ' ' + row.stuLastName;
-					console.log("Login successful");
-					response.redirect('/home');
+					console.log("Student login successful");
+					list = await db_all('SELECT DISTINCT classID FROM attendance WHERE studentID = ?', [userID]);
+					for (var i = 0; i < list.length; i++) {
+						courses.push(list[i].classID);
+					}
+					var stuInfo = {
+						userID: row.stuID,
+						username: request.session.username,
+						isLoggedIn: request.session.stuLoggedin,
+						courses: courses,
+						selectedCourse: null
+					};
+					response.render(path.join(__dirname + '/studentlanding.ejs'), stuInfo);
 				} else {
 					request.flash('error', 'Incorrect ID and/or password');
 					response.redirect('back');
@@ -169,7 +180,7 @@ app.post('/sendEmail', function(request, response) {
 });
 
 app.get('/logout', function(request, response) {
-	console.log("running");
+	console.log("logging out");
 	if (request.session) {
 		request.session.destroy(function(error) {
 			if (error) throw error;
@@ -219,6 +230,48 @@ app.get('/course', async function(req, res) {
 		dateList: dateList
 	};
 	res.render(path.join(__dirname + '/courseInfo.ejs'), info);
+});
+
+app.get('/stuCourse', async function(req, res) {
+	var id = req.session.stuId;
+	var selectedCourse = req.query.courseName;
+	var courses = [];
+	var dateList = [];
+	var profName = "";
+	list = await db_all('SELECT DISTINCT classID FROM attendance WHERE studentID = ?', [id]);
+	for (var i = 0; i < list.length; i++) {
+		courses.push(list[i].classID);
+	}
+	list2 = await db_all('SELECT * FROM attendance WHERE studentID = ? AND classID = ?', [id, selectedCourse]);
+	for (var j = 0; j < list2.length; j++) {
+		dateList.push(list2[j].attendDate);
+	}
+	list3 = await db_all('SELECT DISTINCT profID FROM attendance WHERE studentID = ? AND classID = ?', [id, selectedCourse]);
+	list4 = await db_all('SELECT * FROM professors WHERE profID = ?', [list3[0].profID]);
+	profName = list4[0].profFirstName + " " + list4[0].profLastName;
+	var stuInfo = {
+		userID: id,
+		username: req.session.username,
+		isLoggedIn: req.session.stuLoggedin,
+		courses: courses,
+		selectedCourse: selectedCourse,
+		dateList: dateList,
+		profName: profName
+	};
+	res.render(path.join(__dirname + '/studentlanding.ejs'), stuInfo);
+});
+
+app.get('/getStudentDate', async function(req, res) {
+	let date = req.query.selectedDate;
+	let currentCourse = req.query.course;
+	let student = req.query.id;
+	let query = 'SELECT * FROM attendance WHERE attendDate = ? AND classID = ? AND studentID = ?';
+	let list = await db_all(query, [date, currentCourse, student]);
+	for (var i = 0; i < list.length; i++) {
+		var students = await db_all('SELECT * FROM students WHERE studentID = ?', [list[i].studentID]);
+		list[i].studentName = students[0].stuFirstName + ' ' + students[0].stuLastName;
+	}
+	res.send(list);
 });
 
 app.get('/getStudent', async function(req, res) {

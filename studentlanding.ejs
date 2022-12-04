@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student</title>
+</head>
+
+<body>
+    <!--Landing page-->
+
+    <h2 class="section-heading">Student Portal</h2>
+    <link rel="stylesheet" href="styles.css">
+
+    <% if (isLoggedIn) {%>    
+        <div>Welcome! <%= username%></div>
+        <form action="/logout" method="get">
+            <button type="submit" >Logout</button>
+        </form>
+        
+        <!--Course tiles-->
+        <% if (courses.length > 0) {%>
+            <% for (var i = 0; i < courses.length; i++) { %>
+                <a class="column-4 course" href="/stuCourse?courseName=<%= courses[i] %>">
+                    <h2 class="course-text"><span id="courseSelected"><%= courses[i]%></span></h2>
+                </a>
+            <% } %>
+            <% if (selectedCourse != null) { %>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="hideElement('myModal');">&times;</span>
+                        <div>Viewing Attendance for the course: <span id="nameCourse"><%= selectedCourse%></span></div>
+                        <div><span id="idStudent"><%= userID%></span>: <%= username%></div>
+                        <div>Professor: <%= profName%></div>
+                        <select name="selectDate" id="daList">
+                            <option disabled selected>Select Date...</option>
+                            <% dateList.forEach(function(date) { %>
+                                <option value="<%= date%>"><%= date%></option>
+                            <% }); %>
+                        </select>
+                        <div id="dateTable"></div>
+                    </div>
+                </div>
+            <% } %>
+        <% } else { %>
+            <div>This student has no courses.</div>
+        <% } %>
+    <%} else {%>
+        <div>
+            <h2>Please login as a student to view this page.</h2>
+        </div>
+    <%}%>
+
+    <!--Footer-->
+
+    <div class="footer">
+        <!--left side of footer-->
+        <p class="footer-text-left">
+            <!--change redirect link-->
+            <a href="" class= "menu" >TapIn</a>
+
+            <!--right side of footer-->
+            <div class="footer-content-right">
+                <a href="https://github.com/"><img src="images/github.jpeg" class="icon-style" alt="Github icon"></a>
+                <a href="https://www.twitter.com/"><img src="images/twitter.jpeg" class="icon-style" alt="Twitter icon"></a>
+                <a href="https://www.twitter.com"><img src="images/email.jpeg" class="icon-style" alt="Emailicon"></a>
+            </div>
+        </p>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        function hideElement(elementName) {
+            document.getElementById(elementName).style.display = "none";
+        }
+
+        $('#daList').change(function() {
+        var dateID = $('#daList').val();
+        var courseName = document.getElementById("nameCourse").innerHTML;
+        var idStudent = document.getElementById("idStudent").innerHTML;
+        $.ajax({
+            type: 'GET',
+            data: {selectedDate: dateID, course: courseName, id: idStudent},
+            url: '/getStudentDate',
+            success: function(data) {
+                if (document.getElementById("dateTable2") != undefined) {
+                    document.getElementById("dateTable2").remove();
+                }
+                var dateTableDiv = document.getElementById("dateTable");
+                dateTableDiv.innerHTML = "Start Time: " + data[0].startTime;
+                var dateTable = document.createElement("table");
+                dateTable.id = "dateTable2";
+                let innerT = "";
+                innerT += "<tr class='firstRow'><th>Student ID</th><th>Student Name</th><th>Time</th></tr>";
+                for (var i = 0; i < data.length; i++) {
+                    var timeHTML = "";
+                    if (data[i].attendTime <= data[i].startTime) {
+                        timeHTML = "<span class='onTime'>" + data[i].attendTime + "</span>";
+                    } else if (data[i].attendTime == null) {
+                        timeHTML = "<span class='absent' style='color:#ff0000'>ABSENT</span>";
+                    } else {
+                        timeHTML = "<span class='late' style='color:#fff200'>" + data[i].attendTime + "</span>";
+                    }
+                    innerT += "<tr><td>" + data[i].studentID + "</td><td>" + data[i].studentName
+                    + "</td><td>" + timeHTML + "</td></tr>";
+                    }
+                    dateTable.innerHTML = innerT;
+                    dateTableDiv.append(dateTable);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
