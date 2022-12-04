@@ -36,3 +36,6 @@ The file "professorlanding.html" has been modified into "professorlanding.ejs". 
 
 12/03/2022
 The attendance functionality has been completed, which includes options to add/remove dates and select starting time.
+
+12/04/2022
+The student page has been completed. It is similar to the professor page, except the student can only view the attendance.
