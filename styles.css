@@ -25,7 +25,7 @@
 /* Color and Images for Course Containers  */
 
 .course {
-    background-color: #002d72;
+    background-color: #286cdc;
 }
 
 /*Ruleset for the font size and  for course text*/
@@ -37,6 +37,7 @@
     height: 200px;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-weight: bold;
+    color:black;
 }
 
 
@@ -54,7 +55,7 @@
 /* Hover classes for individualcourse boxes */
 
 .course:hover {
-    background-color: #9da1a3;
+    background-color: #3e79d8;
 }
 
 .modal {
