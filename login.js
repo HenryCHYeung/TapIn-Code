@@ -5,7 +5,9 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const flash = require('connect-flash');
 const flashify = require('flashify');
+const { NFC } = require('nfc-pcsc');
 const app = express();
+const nfc = new NFC();
 
 var transporter = nodemailer.createTransport({
 	service: 'gmail',
@@ -46,6 +48,20 @@ let db = new sqlite.Database('./tapin.db', function(err) {
         console.error(err.message);
     }
     console.log("Connected to the database");
+});
+
+nfc.on('reader', function(reader) {
+	console.log(`${reader.reader.name}  device attached`);
+	reader.on('card', async function(card) {
+		console.log(`${reader.reader.name}  card detected`, card);
+		
+		try {
+			console.log("UID of card: " + card.uid);
+	
+		} catch (err) {
+			console.error(`error when reading data`, err);
+		}
+	});
 });
 
 app.post('/auth', function(request, response) {

@@ -1,8 +1,10 @@
+DROP TABLE students;
 DROP TABLE attendance;
 
 CREATE TABLE IF NOT EXISTS students
 (
 	studentID		INT			PRIMARY KEY, 
+	stuCardID		VARCHAR(50)		NOT NULL,
 	stuFirstName		VARCHAR(50)		NOT NULL, 
 	stuLastName		VARCHAR(50)		NOT NULL,
 	studentEmail		varchar(50) 		NOT NULL,
@@ -36,11 +38,11 @@ CREATE TABLE IF NOT EXISTS attendance
 
 
 INSERT OR REPLACE INTO students VALUES
-(1281205,'Isaac','Ortega','ortega@nyit.edu','passwordIsaac'),
-(1277182,'Christian','Pascal','csinoagp@nyit.edu','passwordChris'),
-(1187413,"O'Sean",'Blagrove','oblagrov@nyit.edu','passwordOSean'),
-(1293960,'Henry','Yeung','cyeung03@nyit.edu','passwordHenry'),
-(1256578,'Kaba','Moussa','mkaba02@nyit.edu','passwordKaba');
+(1281205,'64b43419','Isaac','Ortega','ortega@nyit.edu','passwordIsaac'),
+(1277182,'14693519','Christian','Pascal','csinoagp@nyit.edu','passwordChris'),
+(1187413,'73253519',"O'Sean",'Blagrove','oblagrov@nyit.edu','passwordOSean'),
+(1293960,'54b23419','Henry','Yeung','cyeung03@nyit.edu','passwordHenry'),
+(1256578,'ae823519','Kaba','Moussa','mkaba02@nyit.edu','passwordKaba');
 
 INSERT OR REPLACE INTO professors VALUES
 (1,'Wenjia','Li','wli20@nyit.edu','passwordLi');
