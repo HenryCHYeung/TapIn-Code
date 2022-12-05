@@ -99,9 +99,9 @@
                     if (data[i].attendTime <= data[i].startTime) {
                         timeHTML = "<span class='onTime'>" + data[i].attendTime + "</span>";
                     } else if (data[i].attendTime == null) {
-                        timeHTML = "<span class='absent' style='color:#ff0000'>ABSENT</span>";
+                        timeHTML = "<span class='absent' style='background:#cc3333'>ABSENT</span>";
                     } else {
-                        timeHTML = "<span class='late' style='color:#fff200'>" + data[i].attendTime + "</span>";
+                        timeHTML = "<span class='late' style='background:#fff200'>" + data[i].attendTime + "</span>";
                     }
                     innerT += "<tr><td>" + data[i].studentID + "</td><td>" + data[i].studentName
                     + "</td><td>" + timeHTML + "</td></tr>";
