@@ -1,7 +1,8 @@
 body {
     --color_primary: #b1e4e4;
-    --color_primary-dark: #007f67;
-    --color_secondary: #252c6a;
+    --color_seconday: #286cdc;
+    --color_secondary_light: #3e79d8;
+    --color_link: #252c6a;
     --color_error: #cc3333;
     --color_success: #4bb544;
     --border-radius: 4px;
@@ -119,11 +120,11 @@ body {
     border-radius: var(--border-radius);
     outline: none;
     cursor: pointer;
-    background: var(--color_primary);
+    background: var(--color_seconday);
 }
 
 .form__button:hover {
-    background: var(--color_primary-dark);
+    background: var(--color_secondary_light);
 }
 
 .form__button:active {
@@ -135,7 +136,7 @@ body {
 }
 
 .form__link {
-    color: var(--color_secondary);
+    color: var(--color_link);
     text-decoration: none;
     cursor: pointer;
 }
