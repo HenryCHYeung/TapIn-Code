@@ -33,14 +33,14 @@
                         <span class="close" onclick="hideElement('myModal');">&times;</span>
                         <div>Viewing Attendance for the course: <span id="nameCourse"><%= selectedCourse%></span></div>
                         <div><span id="idStudent"><%= userID%></span>: <%= username%></div>
-                        <div>Professor: <%= profName%></div>
+                        <div class="padding">Professor: <%= profName%></div>
                         <select name="selectDate" id="daList">
                             <option disabled selected>Select Date...</option>
                             <% dateList.forEach(function(date) { %>
                                 <option value="<%= date%>"><%= date%></option>
                             <% }); %>
                         </select>
-                        <div id="dateTable"></div>
+                        <div id="dateTable" class="padding"></div>
                     </div>
                 </div>
             <% } %>
@@ -92,6 +92,7 @@
                 dateTableDiv.innerHTML = "Start Time: " + data[0].startTime;
                 var dateTable = document.createElement("table");
                 dateTable.id = "dateTable2";
+                dateTable.setAttribute("class","center")
                 let innerT = "";
                 innerT += "<tr class='firstRow'><th>Student ID</th><th>Student Name</th><th>Time</th></tr>";
                 for (var i = 0; i < data.length; i++) {
