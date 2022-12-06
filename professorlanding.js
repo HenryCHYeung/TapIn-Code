@@ -152,7 +152,7 @@ function submitAttendance(inputValue) {
                 var timeCell = tableRow.insertCell(2);
                 timeCell.innerHTML = currentTime;
                 if (currentTime > data.startTime) {
-                    timeCell.style.color = "#fff200";
+                    timeCell.style.background = "#fff200";
                 }
             } 
         }
