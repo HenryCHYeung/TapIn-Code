@@ -61,7 +61,11 @@ nfc.on('reader', function(reader) {
 	reader.on('card', async function(card) {
 		console.log(`card detected`, card);
 		let list = await db_all('SELECT * FROM students WHERE stuCardID = ?', [card.uid]);
-		registeredSockets[0].emit('hi', list[0].studentID);
+		try {
+			registeredSockets[registeredSockets.length - 1].emit('hi', list[0].studentID);
+		} catch(error) {
+			console.log("Not taking attendance at the moment");
+		}
 	});
 });
 
@@ -71,7 +75,6 @@ io.on('connection', function(socket) {
 		console.log(msg);
 		registeredSockets.push(socket);
 	});
-	
 });
 
 

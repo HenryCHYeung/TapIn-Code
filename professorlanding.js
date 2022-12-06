@@ -107,7 +107,7 @@ document.getElementById("submitDate").addEventListener("click", function(event) 
                 displayStart.innerHTML = startTime;
                 displayClock();
                 socket.on('hi', function(msg) {
-                    console.log(msg);
+                    submitAttendance(msg);
                 });
             } 
         }
@@ -119,6 +119,10 @@ document.getElementById("submitID").addEventListener("click", function(event) {
     var studentInput = document.getElementById("timeID");
     var inputValue = studentInput.value;
     studentInput.value = "";
+    submitAttendance(inputValue);
+});
+
+function submitAttendance(inputValue) {
     var courseName = document.getElementById("nameCourse").innerHTML;
     var professorID = document.getElementById("professorID").innerHTML;
     var currentDate = document.getElementById("currentDate").innerHTML;
@@ -153,7 +157,7 @@ document.getElementById("submitID").addEventListener("click", function(event) {
             } 
         }
     });
-});
+}
 
 document.getElementById("submitRemove").addEventListener("click", function(event) {
     event.preventDefault();
