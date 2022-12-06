@@ -1,15 +1,32 @@
 /*Professor heading*/
 
 .section-heading {
-    text-align: left;
+    text-align: center;
     color: #102C4E;
     margin-top: 20px;
-    margin-bottom: 70px;
+    margin-bottom: 20px;
     font-size: 30px;
     font-family:'Times New Roman', Times, serif;
     border-bottom: outset;
 }
 
+body {
+    --color_primary: #b1e4e4;
+    --color_secondary: #286cdc;
+    --color_secondary_light: #3072db;
+    --color_link: #252c6a;
+    --color_error: #cc3333;
+    --color_success: #4bb544;
+    --border-radius: 4px;
+
+    margin: 0;
+    height: 640px;
+    padding: 50px;
+    font-size: 18px;
+    background: var(--color_primary);
+    font-family: 'Lexend Deca', sans-serif; 
+    text-align: center;
+}
 
 /* Sizing for Course Containers  */
 
@@ -41,13 +58,6 @@
 }
 
 
-.body {
-    margin: auto;
-    width: 640px; 
-    padding: 50px;
-    font-family: 'Lexend Deca', sans-serif; 
-    color: #2E475D;    
-  }
 
 /*Changing the contenet color with user interaction*/
 
@@ -57,6 +67,17 @@
 .course:hover {
     background-color: #3e79d8;
 }
+
+
+.center{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.padding{
+   padding: 20px;
+}
+
 
 .modal {
     position: fixed;
@@ -74,7 +95,6 @@
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
     width: 80%;
   }
   
