@@ -55,17 +55,17 @@
                                 <input type="time" id="selectTime" name="selectTime" required>
                                 <button type="submit" id="submitDate">Submit</button>
                             </form>
-                            <div id="dateMsg"></div>
-                            <div id="doAttendance" style="display:none">
+                            <div id="dateMsg" ></div>
+                            <div id="doAttendance" class="padding" style="display:none">
                                 <div>Taking Attendance for the date: <span id="currentDate"></span></div>
                                 <div>The starting time is: <span id="displayStart"></span></div>
                                 <div>Current Time: <span id="tickingClock"></span></div>
-                                <form id="takeAttendace">
+                                <form id="takeAttendace" class="padding">
                                     <input type="text" id="timeID" name="timeID" autofocus placeholder="Student ID" required>
                                     <button type="submit" id="submitID">Submit</button>
                                 </form>
-                                <div id="attendMsg"></div>
-                                <table id="attendTable" class="padding">
+                                <div id="attendMsg" class="padding"></div>
+                                <table id="attendTable" class="center">
                                     <tr>
                                         <th>Student ID</th>
                                         <th>Student Name</th>
@@ -85,8 +85,8 @@
                                 </select>
                                 <button type="submit" id="submitRemove">Submit</button>
                             </form>
-                            <div id ="removeMsg"></div>
-                            <button id="removeRefresh" style="display:none" onclick="window.location.reload();">Back</button>
+                            <div id ="removeMsg" class="padding"></div>
+                            <button id="removeRefresh" class="center" style="display:none" onclick="window.location.reload();">Back</button>
                         </div>
                     </div>
                 </div>
