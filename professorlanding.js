@@ -18,6 +18,7 @@ $('#stuList').change(function() {
             var studentTableDiv = document.getElementById("studentTable");
             var studentTable = document.createElement("table");
             studentTable.id = "studentTable2";
+            studentTable.setAttribute("class","center");
             let innerT = "";
             innerT += "<tr class='firstRow'><th>Date</th><th>Time</th></tr>";
             for (var i = 0; i < data.length; i++) {
@@ -52,6 +53,7 @@ $('#daList').change(function() {
             dateTableDiv.innerHTML = "Start Time: " + data[0].startTime;
             var dateTable = document.createElement("table");
             dateTable.id = "dateTable2";
+            dateTable.setAttribute("class","center")
             let innerT = "";
             innerT += "<tr class='firstRow'><th>Student ID</th><th>Student Name</th><th>Time</th></tr>";
             for (var i = 0; i < data.length; i++) {

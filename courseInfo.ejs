@@ -14,79 +14,81 @@
     <h2 class="section-heading">Professor Portal</h2>
     <link rel="stylesheet" href="styles.css">
 
-    <%if (isLoggedIn) {%>    
-        <div><h1><%= username%>: <span id="nameCourse"><%= courseName%></span></h1></div>
-        <h4>Professor ID: <span id="professorID"><%= userID%></span></h4>
-        <button id="backButton" onclick="history.back();">Back to Dashboard</button>
-        <div>
-            <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
-            <button id="dateButton" onclick="hideAttendance();">Add date</button>
-            <button id="removeButton" onclick="removeDateButton();">Remove date</button>
-            <div id="viewOptions" style="display:none">
-                <h3>View By</h3>
-                <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
-                <button id="dateButton" onclick="toggleView('dateView', 'studentView');">Date</button>
-                <div id="studentView" style="display:none">
-                    <select name="selectStudent" id="stuList">
-                        <option disabled selected>Select Student...</option>
-                        <% studentList.forEach(function(student) { %>
-                            <option value="<%= student.studentID%>"><%= student.studentID%>: <%= student.studentName%></option>
-                        <% }); %>
-                    </select>
-                    <div id="studentTable"></div>
-                </div>
-                <div id="dateView" style="display:none">
-                    <select name="selectDate" id="daList">
-                        <option disabled selected>Select Date...</option>
-                        <% dateList.forEach(function(date) { %>
-                            <option value="<%= date%>"><%= date%></option>
-                        <% }); %>
-                    </select>
-                    <div id="dateTable"></div>
-                </div>
-            </div>
-            <div id="addDate" style="display:none">
-                <form id="createDate">
-                    <label for="selectDate">Select a date:</label>
-                    <input type="date" id="selectDate" name="selectDate" required>
-                    <label for="selectTime">Select starting time:</label>
-                    <input type="time" id="selectTime" name="selectTime" required>
-                    <button type="submit" id="submitDate">Submit</button>
-                </form>
-                <div id="dateMsg"></div>
-                <div id="doAttendance" style="display:none">
-                    <div>Taking Attendance for the date: <span id="currentDate"></span></div>
-                    <div>The starting time is: <span id="displayStart"></span></div>
-                    <div>Current Time: <span id="tickingClock"></span></div>
-                    <form id="takeAttendace">
-                        <input type="text" id="timeID" name="timeID" autofocus placeholder="Student ID" required>
-                        <button type="submit" id="submitID">Submit</button>
-                    </form>
-                    <div id="attendMsg"></div>
-                    <table id="attendTable">
-                        <tr>
-                            <th>Student ID</th>
-                            <th>Student Name</th>
-                            <th>Sign-in Time</th>
-                        </tr>
-                    </table>
-                    <button id="doneRefresh" onclick="window.location.reload();">Done</button>
-                </div>
-            </div>
-            <div id="removeDate" style="display:none">
-                <h4>Select Date to Remove:</h4>
-                <form id="removeDateList">
-                    <select name="selectRemoveDate" id="removeList">
-                        <% dateList.forEach(function(date) { %>
-                            <option value="<%= date%>"><%= date%></option>
-                        <% }); %>
-                    </select>
-                    <button type="submit" id="submitRemove">Submit</button>
-                </form>
-                <div id ="removeMsg"></div>
-                <button id="removeRefresh" style="display:none" onclick="window.location.reload();">Back</button>
-            </div>
-        </div>
+    <%if (isLoggedIn) {%>   
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                    <div><h1><%= username%>: <span id="nameCourse"><%= courseName%></span></h1></div>
+                    <h4>Professor ID: <span id="professorID"><%= userID%></span></h4>
+                    <button id="backButton" onclick="history.back();">Back to Dashboard</button>
+                    <div class="padding">
+                        <button id="showAttend" onclick="switchButtonView();">View Attendance</button>
+                        <button id="dateButton" onclick="hideAttendance();">Add date</button>
+                        <button id="removeButton" onclick="removeDateButton();">Remove date</button>
+                        <div id="viewOptions" class="padding" style="display:none">
+                            <h3>View By</h3>
+                            <button id="studentButton" onclick="toggleView('studentView', 'dateView');">Student</button>
+                            <button id="dateButton" onclick="toggleView('dateView', 'studentView');">Date</button>
+                            <div id="studentView" class="padding" style="display:none">
+                                <select name="selectStudent" id="stuList">
+                                    <option disabled selected>Select Student...</option>
+                                    <% studentList.forEach(function(student) { %>
+                                        <option value="<%= student.studentID%>"><%= student.studentID%>: <%= student.studentName%></option>
+                                    <% }); %>
+                                </select>
+                                <div id="studentTable" class="padding"></div>
+                            </div>
+                            <div id="dateView" class="padding" style="display:none">
+                                <select name="selectDate" id="daList">
+                                    <option disabled selected>Select Date...</option>
+                                    <% dateList.forEach(function(date) { %>
+                                        <option value="<%= date%>"><%= date%></option>
+                                    <% }); %>
+                                </select>
+                                <div id="dateTable" class="padding"></div>
+                            </div>
+                        </div>
+                        <div id="addDate" class="padding" style="display:none">
+                            <form id="createDate">
+                                <label for="selectDate">Select a date:</label>
+                                <input type="date" id="selectDate" name="selectDate" required>
+                                <label for="selectTime">Select starting time:</label>
+                                <input type="time" id="selectTime" name="selectTime" required>
+                                <button type="submit" id="submitDate">Submit</button>
+                            </form>
+                            <div id="dateMsg"></div>
+                            <div id="doAttendance" style="display:none">
+                                <div>Taking Attendance for the date: <span id="currentDate"></span></div>
+                                <div>The starting time is: <span id="displayStart"></span></div>
+                                <div>Current Time: <span id="tickingClock"></span></div>
+                                <form id="takeAttendace">
+                                    <input type="text" id="timeID" name="timeID" autofocus placeholder="Student ID" required>
+                                    <button type="submit" id="submitID">Submit</button>
+                                </form>
+                                <div id="attendMsg"></div>
+                                <table id="attendTable" class="padding">
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Student Name</th>
+                                        <th>Sign-in Time</th>
+                                    </tr>
+                                </table>
+                                <button id="doneRefresh" onclick="window.location.reload();">Done</button>
+                            </div>
+                        </div>
+                        <div id="removeDate" class="padding" style="display:none">
+                            <h4>Select Date to Remove:</h4>
+                            <form id="removeDateList">
+                                <select name="selectRemoveDate" id="removeList">
+                                    <% dateList.forEach(function(date) { %>
+                                        <option value="<%= date%>"><%= date%></option>
+                                    <% }); %>
+                                </select>
+                                <button type="submit" id="submitRemove">Submit</button>
+                            </form>
+                            <div id ="removeMsg"></div>
+                            <button id="removeRefresh" style="display:none" onclick="window.location.reload();">Back</button>
+                        </div>
+                    </div>
     <%} else {%>
         <div>
             <h2>Please login as a professor to view this page.</h2>
