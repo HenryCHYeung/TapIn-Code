@@ -1,12 +1,16 @@
 const sqlite = require('sqlite3').verbose();
 const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 const session = require('express-session');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const flash = require('connect-flash');
 const flashify = require('flashify');
 const { NFC } = require('nfc-pcsc');
-const app = express();
 const nfc = new NFC();
 
 var transporter = nodemailer.createTransport({
@@ -17,6 +21,8 @@ var transporter = nodemailer.createTransport({
 	  pass: 'vmbeyvbuohrkrpoq'
 	}
 });
+
+var registeredSockets = [];
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -49,20 +55,25 @@ let db = new sqlite.Database('./tapin.db', function(err) {
     }
     console.log("Connected to the database");
 });
-
+	
 nfc.on('reader', function(reader) {
 	console.log(`${reader.reader.name}  device attached`);
 	reader.on('card', async function(card) {
-		console.log(`${reader.reader.name}  card detected`, card);
-		
-		try {
-			console.log("UID of card: " + card.uid);
-	
-		} catch (err) {
-			console.error(`error when reading data`, err);
-		}
+		console.log(`card detected`, card);
+		let list = await db_all('SELECT * FROM students WHERE stuCardID = ?', [card.uid]);
+		registeredSockets[0].emit('hi', list[0].studentID);
 	});
 });
+
+io.on('connection', function(socket) {
+	console.log('connected');
+	socket.on('hi', function(msg) {
+		console.log(msg);
+		registeredSockets.push(socket);
+	});
+	
+});
+
 
 app.post('/auth', function(request, response) {
 	let userID = request.body.signinID;
@@ -397,7 +408,7 @@ app.get('/removeDate', async function(req, res) {
 	res.send(message);
 });
 
-app.listen(3000, function(err) {
+server.listen(3000, function(err) {
     if (err) {
         console.error(err.message);
     }

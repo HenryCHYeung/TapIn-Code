@@ -1,3 +1,6 @@
+var socket = io();
+socket.emit('hi', 'socket in');
+
 const dateElement = document.getElementById("selectDate");
 dateElement.valueAsNumber = Date.now() - (new Date()).getTimezoneOffset() * 60000;
 
@@ -101,7 +104,9 @@ document.getElementById("submitDate").addEventListener("click", function(event) 
                 showDate.innerHTML = dateValue;
                 displayStart.innerHTML = startTime;
                 displayClock();
-
+                socket.on('hi', function(msg) {
+                    console.log(msg);
+                });
             } 
         }
     });
@@ -140,7 +145,6 @@ document.getElementById("submitID").addEventListener("click", function(event) {
                 nameCell.innerHTML = studentName;
                 var timeCell = tableRow.insertCell(2);
                 timeCell.innerHTML = currentTime;
-                console.log(data.startTime);
                 if (currentTime > data.startTime) {
                     timeCell.style.color = "#fff200";
                 }
