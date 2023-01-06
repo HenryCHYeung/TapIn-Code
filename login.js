@@ -64,7 +64,7 @@ nfc.on('reader', function(reader) {
 		try {
 			registeredSockets[registeredSockets.length - 1].emit('hi', list[0].studentID);
 		} catch(error) {
-			console.log("Not taking attendance at the moment");
+			console.log(error);
 		}
 	});
 });
@@ -328,7 +328,7 @@ app.get('/submitDate', async function(req, res) {
 	let course = req.query.course;
 	let id = req.query.id;
 	let list = await db_all('SELECT DISTINCT studentID FROM attendance WHERE classID = ?', [course]);
-	let dateList = await db_all('SELECT * FROM attendance WHERE attendDate = ?', [newDate]);
+	let dateList = await db_all('SELECT * FROM attendance WHERE attendDate = ? AND classID = ? AND profID = ?', [newDate, course, id]);
 	let insertQuery = 'INSERT INTO attendance VALUES(?, ?, ?, ?, ?, NULL)';
 	let listOfStudents = new Array(list.length).fill({studentID: '', studentName: ''});
 	let currentStu = [];
